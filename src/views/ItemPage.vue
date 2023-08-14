@@ -1,10 +1,11 @@
 <template>
     <v-container>
         <div v-if="cocktailsStore.isSingleCocktail" class="content-wrapper">
-            <v-img
+            <img
                 :src="cocktailsStore.singleCocktail?.strDrinkThumb"
                 class="cocktail-img"
             />
+
             <div>
                 <div class="cocktail-name">
                     {{ cocktailsStore.singleCocktail?.strDrink }}
@@ -37,6 +38,7 @@ export default defineComponent({
     display: flex;
     justify-content: center;
 }
+
 .cocktail-img {
     width: 40%;
     margin-right: 25px;

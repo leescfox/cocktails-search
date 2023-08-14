@@ -1,15 +1,17 @@
 <template>
     <v-app class="h-screen">
         <v-app-bar height="60" class="px-2">
-            <v-text-field
-                v-model="searchField"
-                @click:append-inner="searchRequest"
-                append-inner-icon="mdi-magnify"
-                hide-details
-                variant="solo"
-                density="compact"
-                placeholder="Search for the cocktails..."
-            />
+            <v-form @submit.prevent="searchRequest" class="search-form">
+                <v-text-field
+                    v-model="searchField"
+                    @click:append-inner="searchRequest"
+                    append-inner-icon="mdi-magnify"
+                    hide-details
+                    variant="solo"
+                    density="compact"
+                    placeholder="Search for the cocktails..."
+                />
+            </v-form>
         </v-app-bar>
         <v-main>
             <router-view />
@@ -55,3 +57,8 @@ export default defineComponent({
     },
 })
 </script>
+<style lang="scss" scoped>
+.search-form {
+    width: 100%;
+}
+</style>
