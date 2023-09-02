@@ -16,7 +16,7 @@ export const useCocktailsStore = defineStore('cocktails', {
         isSingleCocktail: (state): boolean => state.singleCocktail !== null,
     },
     actions: {
-        async fetchCocktail(cocktailId: string): Promise<void> {
+        async fetchCocktail(cocktailId: string): Promise<Cocktail | null> {
             try {
                 const paramsString: string = new URLSearchParams({
                     i: cocktailId,
@@ -25,10 +25,11 @@ export const useCocktailsStore = defineStore('cocktails', {
                     `${this.lookupUrl}?${paramsString}`
                 )
                 const resultObject: CocktailsResponse = await response.json()
-                this.singleCocktail =
-                    resultObject.drinks !== null ? resultObject.drinks[0] : null
+                return resultObject.drinks !== null
+                    ? resultObject.drinks[0]
+                    : null
             } catch {
-                this.singleCocktail = null
+                return null
             }
         },
     },

@@ -7,3 +7,5 @@ export interface Cocktail {
 }
 
 export type CocktailsResponse = { drinks: Cocktail[] | null }
+
+export type MetaTitle = string | undefined
