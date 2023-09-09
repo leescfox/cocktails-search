@@ -30,23 +30,25 @@ const routes = [
         component: () => import('@/views/ItemPage.vue'),
         beforeEnter: async (to: RouteLocationNormalized) => {
             const errorTitle = 'Error'
+
             const cocktailsStore = useCocktailsStore()
-            let cocktail: Cocktail | undefined | null =
-                cocktailsStore.cocktails.find(
-                    (elem: Cocktail) => elem.idDrink === to.params.id
-                )
+            let cocktail: Cocktail | undefined = cocktailsStore.cocktails.find(
+                (cocktail: Cocktail) => cocktail.idDrink === to.params.id
+            )
             try {
                 if (cocktail === undefined) {
-                    cocktail = await cocktailsStore.fetchCocktail(
-                        to.params.id as string
-                    )
+                    cocktailsStore.singleCocktail =
+                        await cocktailsStore.fetchCocktail(
+                            to.params.id as string
+                        )
                 }
-                cocktailsStore.singleCocktail = cocktail
                 document.title =
                     cocktail === null ? errorTitle : cocktail.strDrink
             } catch {
                 document.title = errorTitle
                 cocktailsStore.singleCocktail = null
+            } finally {
+                // document.title = cocktailsStore.haveSingleCocktail
             }
         },
     },

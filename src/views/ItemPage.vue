@@ -20,16 +20,10 @@
     </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useCocktailsStore } from '@/store/cocktails'
 
-export default defineComponent({
-    setup() {
-        const cocktailsStore = useCocktailsStore()
-        return { cocktailsStore }
-    },
-})
+const cocktailsStore = useCocktailsStore()
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,12 @@
 <template>
     <v-container>
-        <ul v-if="cocktailsStore.areCocktails" class="items-wrapper">
+        <ul v-if="cocktailsStore.hasCocktails" class="items-wrapper">
             <li
                 v-for="cocktail in cocktailsStore.cocktails"
                 :key="cocktail.idDrink"
+                class="item"
             >
-                <figure class="item ma-2">
+                <figure class="cocktail-figure ma-2">
                     <v-img :src="cocktail.strDrinkThumb" cover />
                     <figcaption class="text-center py-2">
                         <router-link
@@ -27,26 +28,25 @@
     </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { useCocktailsStore } from '@/store/cocktails'
 
-export default defineComponent({
-    setup() {
-        const cocktailsStore = useCocktailsStore()
-        return { cocktailsStore }
-    },
-})
+const cocktailsStore = useCocktailsStore()
 </script>
 
 <style lang="scss" scoped>
 @import '@/scss/variables.scss';
 .items-wrapper {
     list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
     .item {
-        border: 1px solid rgb(0, 0, 0);
-        border-radius: $default-border-radius;
-        overflow: hidden;
+        flex-basis: 33%;
+        .cocktail-figure {
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: $default-border-radius;
+            overflow: hidden;
+        }
     }
 }
 .empty {
