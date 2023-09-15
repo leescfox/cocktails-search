@@ -1,4 +1,3 @@
-// Utilities
 import { defineStore } from 'pinia'
 import { Cocktail, CocktailsResponse } from '@/types/index'
 import { ref, computed } from 'vue'
@@ -9,7 +8,7 @@ export const useCocktailsStore = defineStore('cocktails', () => {
     const searchUrl = ref<string>(
         'https://www.thecocktaildb.com/api/json/v1/1/search.php'
     )
-    const lookupUrl = ref<string>(
+    const searchByIdUrl = ref<string>(
         'https://www.thecocktaildb.com/api/json/v1/1/lookup.php'
     )
 
@@ -17,9 +16,14 @@ export const useCocktailsStore = defineStore('cocktails', () => {
     const hasCocktails = computed<boolean>(() => cocktails.value.length > 0)
 
     const singleCocktail = ref<Cocktail | null>(null)
-    const haveSingleCocktail = computed<boolean>(
-        () => singleCocktail.value !== null
-    )
+
+    function setSingleCocktail(idOfCocktail: string): void {
+        const foundCocktail: Cocktail | undefined = cocktails.value.find(
+            (cocktail: Cocktail): boolean => cocktail.idDrink === idOfCocktail
+        )
+        singleCocktail.value =
+            foundCocktail !== undefined ? foundCocktail : null
+    }
 
     const searchField = ref<string>('')
 
@@ -47,7 +51,7 @@ export const useCocktailsStore = defineStore('cocktails', () => {
                 i: cocktailId,
             }).toString()
             const response: Response = await fetch(
-                `${lookupUrl.value}?${paramsString}`
+                `${searchByIdUrl.value}?${paramsString}`
             )
             const resultObject: CocktailsResponse = await response.json()
             return resultObject.drinks !== null ? resultObject.drinks[0] : null
@@ -58,11 +62,11 @@ export const useCocktailsStore = defineStore('cocktails', () => {
 
     return {
         searchUrl,
-        lookupUrl,
+        searchByIdUrl,
         cocktails,
         hasCocktails,
         singleCocktail,
-        haveSingleCocktail,
+        setSingleCocktail,
         searchField,
         searchRequest,
         fetchCocktail,

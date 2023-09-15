@@ -1,4 +1,3 @@
-// Composables
 import { useCocktailsStore } from '@/store/cocktails'
 import { Cocktail, MetaTitle } from '@/types'
 import {
@@ -29,27 +28,25 @@ const routes = [
         path: '/results/:id',
         component: () => import('@/views/ItemPage.vue'),
         beforeEnter: async (to: RouteLocationNormalized) => {
-            const errorTitle = 'Error'
-
+            const errorTitle: string = 'Error'
             const cocktailsStore = useCocktailsStore()
-            let cocktail: Cocktail | undefined = cocktailsStore.cocktails.find(
-                (cocktail: Cocktail) => cocktail.idDrink === to.params.id
-            )
-            try {
-                if (cocktail === undefined) {
+            if (
+                cocktailsStore.singleCocktail === null ||
+                cocktailsStore.singleCocktail.idDrink !== to.params.id
+            ) {
+                try {
                     cocktailsStore.singleCocktail =
                         await cocktailsStore.fetchCocktail(
                             to.params.id as string
                         )
+                } catch {
+                    cocktailsStore.singleCocktail = null
                 }
-                document.title =
-                    cocktail === null ? errorTitle : cocktail.strDrink
-            } catch {
-                document.title = errorTitle
-                cocktailsStore.singleCocktail = null
-            } finally {
-                // document.title = cocktailsStore.haveSingleCocktail
             }
+            document.title =
+                cocktailsStore.singleCocktail !== null
+                    ? cocktailsStore.singleCocktail.strDrink
+                    : errorTitle
         },
     },
 ]

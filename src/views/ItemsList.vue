@@ -7,7 +7,9 @@
                 class="item"
             >
                 <figure class="cocktail-figure ma-2">
-                    <v-img :src="cocktail.strDrinkThumb" cover />
+                    <div class="img-wrapper">
+                        <v-img :src="cocktail.strDrinkThumb" cover />
+                    </div>
                     <figcaption class="text-center py-2">
                         <router-link
                             :to="{
@@ -16,6 +18,11 @@
                                     id: cocktail.idDrink,
                                 },
                             }"
+                            @click="
+                                cocktailsStore.setSingleCocktail(
+                                    cocktail.idDrink
+                                )
+                            "
                             >{{ cocktail.strDrink }}</router-link
                         >
                     </figcaption>
@@ -41,11 +48,14 @@ const cocktailsStore = useCocktailsStore()
     display: flex;
     flex-wrap: wrap;
     .item {
-        flex-basis: 33%;
+        flex-basis: 33.33%;
         .cocktail-figure {
             border: 1px solid rgb(0, 0, 0);
             border-radius: $default-border-radius;
             overflow: hidden;
+            .img-wrapper {
+                aspect-ratio: 1/1;
+            }
         }
     }
 }
